@@ -1,0 +1,34 @@
+{
+    "components": {
+        "uom-handler": {
+            "type":"service",
+            "location":"services"
+        },
+        "uom-all": {
+            "type":"component",
+            "location":"components"
+        },
+        "ar-camara": {
+            "type":"component",
+            "location":"components"
+        }
+    },
+    "description":{
+        "title": "UOM",
+        "author":"Davvag",
+        "version":"0.1",
+        "icon":"appicon.png"
+    },
+    "tags":["showindock"],
+    "configuration":{
+        "webdock":{
+            "startupComponent" : "ar-camara",
+            "onLoad": ["uom-handler"],
+            "routes":{
+                "partials":{
+                    "/uom" : "uom-form"
+                }
+            }
+        }
+    }
+}

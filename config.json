@@ -1,0 +1,6 @@
+{
+    "variables":{
+        "MAIN_STORE_DOMAIN":"localhost/sossgrid.js",
+        "MAPS_APIKEY":"AIzaSyCKsfJwJG7pfmMPXYXZyex8gtj_dw2mqro"
+    }
+}
