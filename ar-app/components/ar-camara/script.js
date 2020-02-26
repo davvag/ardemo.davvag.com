@@ -64,11 +64,11 @@ function initialize()
 
 	arToolkitSource = new THREEx.ArToolkitSource({
 		sourceType : 'webcam',
-		sourceWidth: 600,
-		sourceHeight: 600,
+		sourceWidth: 640,
+		sourceHeight: 480,
 		// resolution displayed for the source 
-		displayWidth: 600,
-		displayHeight: 600
+		displayWidth: 640,
+		displayHeight: 480
 	});
 
 	function onResize()
@@ -141,6 +141,7 @@ function initialize()
 					group.position.x = 0.10;
 					group.scale.set(0.30,0.30,0.30);
 					markerRoot1.add(group);
+					animate();
 				}, onProgress, onError );
 		});
 }
