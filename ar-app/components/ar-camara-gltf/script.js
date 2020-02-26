@@ -170,7 +170,7 @@ function initialize()
 function update()
 {
 	// update artoolkit on every frame
-	//car.rotation.z += 0.01;
+	car.rotation.z += 0.01;
 
 	if ( arToolkitSource.ready !== false )
 		arToolkitContext.update( arToolkitSource.domElement );

@@ -170,18 +170,18 @@ function animate()
         methods: {
             navigateBack: function(){
                 initialize();
-        			animate();
+        			//animate();
             }
         },
         data : bindData,
         onReady : function(s){
-            
+            //initialize();
         }
     }
 
     exports.vue = vueData;
     exports.onReady = function(element){
-		initialize();
-        animate();
+		//initialize();
+        //animate();
     }
 });
