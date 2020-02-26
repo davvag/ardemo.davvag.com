@@ -109,7 +109,7 @@ function initialize()
 	markerRoot1 = new THREE.Group();
 	scene.add(markerRoot1);
 	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-		type: 'pattern', patternUrl: "assets/ar-app/data/pattern-hiru-2.patt",
+		type: 'pattern', patternUrl: "assets/ar-app/data/pattern-hiru-3.patt",
 	})
 
 	let geometry1 = new THREE.PlaneBufferGeometry(1,1, 4,4);
