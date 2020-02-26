@@ -118,7 +118,7 @@ function initialize()
 	let material1 = new THREE.MeshBasicMaterial( { color: 0x0000ff, opacity: 0.5 } );
 	mesh1 = new THREE.Mesh( geometry1, material1 );
 	mesh1.rotation.x = -Math.PI/2;
-	markerRoot1.add( mesh1 );
+	//markerRoot1.add( mesh1 );
 	
 	function onProgress(xhr) { 
 		bindData.loading=(xhr.loaded / xhr.total * 100) + '% loaded';
@@ -133,7 +133,7 @@ function initialize()
 				.setMaterials( materials )
 				.setPath( 'assets/ar-app/models/helecopter/' )
 				.load( 'chopper.obj', function ( group ) {
-					//mesh0 = group.children[0];
+					mesh0 = group;
 					//mesh0.material.side = THREE.DoubleSide;
 					group.position.y = 0.10;
 					group.position.x = 0.10;
@@ -148,7 +148,9 @@ function initialize()
 function update()
 {
 	// update artoolkit on every frame
-	//mesh0.rotation.y += 0.01;
+	if(mesh0){
+		mesh0.rotation.y += 0.01;
+	}
 
 	if ( arToolkitSource.ready !== false )
 		arToolkitContext.update( arToolkitSource.domElement );
@@ -179,7 +181,7 @@ function animate()
         },
         data : bindData,
         onReady : function(s){
-            //initialize();
+            initialize();
         }
     }
 
