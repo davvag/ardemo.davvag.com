@@ -4,38 +4,13 @@
     "author":"Supun Dissanayake",
     "version" : "0.1",
     "gitUrl" : "",
+    "sync":"true",
+    "sequencialResourceDownload": true,
     "resources": {
-        "js":[
-            {
-                "tag": "three.js",
-                "location":"js/three.js"
-            },{
-                "tag": "OBJLoader.js",
-                "location":"js/OBJLoader.js"
-            },{
-                "tag": "MTLLoader.js",
-                "location":"js/MTLLoader.js"
-            },{
-                "tag": "artoolkit.min.js",
-                "location":"jsartoolkit5/artoolkit.min.js"
-            },{
-                "tag": "artoolkit.api.js",
-                "location":"jsartoolkit5/artoolkit.api.js"
-            },{
-                "tag": "threex-artoolkitsource.js",
-                "location":"threex/threex-artoolkitsource.js"
-            },{
-                "tag": "threex-artoolkitcontext.js",
-                "location":"threex/threex-artoolkitcontext.js"
-            },{
-                "tag": "threex-arbasecontrols.js",
-                "location":"threex/threex-arbasecontrols.js"
-            },{
-                "tag": "threex-armarkercontrols.js",
-                "location":"threex/threex-armarkercontrols.js"
-            }
-        ],
+        
         "files":[
+            
+
             {
                 "type" : "mainScript",
                 "location" : "script.js"

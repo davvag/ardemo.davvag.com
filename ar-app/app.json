@@ -11,6 +11,14 @@
         "ar-camara": {
             "type":"component",
             "location":"components"
+        },
+        "ar-camara-gltf": {
+            "type":"component",
+            "location":"components"
+        },
+        "image_capture":{
+            "type":"component",
+            "location":"components"
         }
     },
     "description":{
@@ -26,7 +34,8 @@
             "onLoad": ["uom-handler"],
             "routes":{
                 "partials":{
-                    "/uom" : "uom-form"
+                    "/gltf" : "ar-camara-gltf",
+                    "/image" : "image_capture"
                 }
             }
         }

@@ -52,7 +52,7 @@ function initialize()
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
-	document.body.appendChild( renderer.domElement );
+	document.getElementById("camera").appendChild( renderer.domElement );
 
 	clock = new THREE.Clock();
 	deltaTime = 0;
@@ -123,18 +123,19 @@ function initialize()
 	function onError(xhr) { console.log( 'An error happened' ); }
 	
 	new THREE.MTLLoader()
-		.setPath( 'assets/ar-app/models' )
-		.load( 'Blank.mtl', function ( materials ) {
+		.setPath( 'assets/ar-app/models/helecopter/' )
+		.load( 'chopper.mtl', function ( materials ) {
 			materials.preload();
 			new THREE.OBJLoader()
 				.setMaterials( materials )
-				.setPath( 'assets/ar-app/models' )
-				.load( '17341_Tote_bag_womens_V1.obj', function ( group ) {
-					mesh0 = group.children[0];
+				.setPath( 'assets/ar-app/models/helecopter/' )
+				.load( 'chopper.obj', function ( group ) {
+					//mesh0 = group.children[0];
 					//mesh0.material.side = THREE.DoubleSide;
-					mesh0.position.y = 0.10;
-					mesh0.scale.set(0.10,0.10,0.10);
-					markerRoot1.add(mesh0);
+					group.position.y = 0.10;
+					group.position.x = 0.10;
+					group.scale.set(0.30,0.30,0.30);
+					markerRoot1.add(group);
 				}, onProgress, onError );
 		});
 }
@@ -143,6 +144,8 @@ function initialize()
 function update()
 {
 	// update artoolkit on every frame
+	//mesh0.rotation.y += 0.01;
+
 	if ( arToolkitSource.ready !== false )
 		arToolkitContext.update( arToolkitSource.domElement );
 }
@@ -166,18 +169,19 @@ function animate()
     var vueData =   {
         methods: {
             navigateBack: function(){
-                handler1 = exports.getShellComponent("soss-routes");
-                handler1.appNavigate("..");
+                initialize();
+        			animate();
             }
         },
         data : bindData,
         onReady : function(s){
-            initialize();
-            animate();
+            
         }
     }
 
     exports.vue = vueData;
     exports.onReady = function(element){
+		initialize();
+        animate();
     }
 });
