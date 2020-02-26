@@ -14,7 +14,8 @@ WEBDOCK.component().register(function(exports){
     var bindData = {
         item:{},
         submitErrors: undefined,
-        i18n: undefined
+		i18n: undefined,
+		loading:""
     };
 
     var validator;
@@ -52,7 +53,7 @@ function initialize()
 	renderer.domElement.style.position = 'absolute'
 	renderer.domElement.style.top = '0px'
 	renderer.domElement.style.left = '0px'
-	document.getElementById("camera").appendChild( renderer.domElement );
+	document.body.appendChild( renderer.domElement );
 
 	clock = new THREE.Clock();
 	deltaTime = 0;
@@ -63,12 +64,7 @@ function initialize()
 	////////////////////////////////////////////////////////////
 
 	arToolkitSource = new THREEx.ArToolkitSource({
-		sourceType : 'webcam',
-		sourceWidth: 640,
-		sourceHeight: 480,
-		// resolution displayed for the source 
-		displayWidth: 640,
-		displayHeight: 480
+		sourceType : 'webcam'
 	});
 
 	function onResize()
@@ -124,7 +120,9 @@ function initialize()
 	mesh1.rotation.x = -Math.PI/2;
 	markerRoot1.add( mesh1 );
 	
-	function onProgress(xhr) { console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
+	function onProgress(xhr) { 
+		bindData.loading=(xhr.loaded / xhr.total * 100) + '% loaded';
+		console.log( (xhr.loaded / xhr.total * 100) + '% loaded' ); }
 	function onError(xhr) { console.log( 'An error happened' ); }
 	
 	new THREE.MTLLoader()
