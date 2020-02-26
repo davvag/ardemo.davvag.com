@@ -64,6 +64,11 @@ function initialize()
 
 	arToolkitSource = new THREEx.ArToolkitSource({
 		sourceType : 'webcam',
+		sourceWidth: 600,
+		sourceHeight: 600,
+		// resolution displayed for the source 
+		displayWidth: 600,
+		displayHeight: 600
 	});
 
 	function onResize()
