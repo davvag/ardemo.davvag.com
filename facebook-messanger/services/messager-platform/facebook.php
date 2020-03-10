@@ -25,15 +25,17 @@ class FBMessangerPlatform {
                     $pageid= $value->id;
                     if(isset($value->messaging))
                     foreach ($value->messaging as $msg) {
+                        $r=$this->sendMessage($msg->sender->id,$msg->message->text);
                         $m=new stdClass();
                         $m->msgid=$msg->message->mid;
                         $m->psid=$msg->sender->id;
                         $m->pageid=$pageid;
                         $m->message=$msg->message->text;
+                        $m->replymsgid=$r->message_id;
                         //$m->message=$msg->message->text;
                         $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
                         CacheData::setObjects($m->msgid,"fb_msg_received",$m);
-                        $res=$this->sendMessage($msg->sender->id,"received");
+                        
                         return $result;
                         //$res=$this->sendMessage(c,"received");
                     }
@@ -64,9 +66,8 @@ class FBMessangerPlatform {
             $context = stream_context_create($options);
 
             $result = file_get_contents($url, false, $context);
-         echo $result;
-         //$json=json_($result);
-         //return $json;
+        
+            return json_decode($result);
     }
 
     private  function callRest($url, $jsonObj = null, $method="GET", $headerArray=null){
