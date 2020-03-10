@@ -32,7 +32,7 @@ class FBMessangerPlatform {
                         $m->message=$msg->message->text;
                         //$m->message=$msg->message->text;
                         $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
-                        //$res=$this->sendMessage($msg->sender->id,"received");
+                        $res=$this->sendMessage($msg->sender->id,"received");
                         return $result;
                         //$res=$this->sendMessage(c,"received");
                     }

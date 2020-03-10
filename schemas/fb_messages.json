@@ -10,11 +10,17 @@
         },
         {
             "fieldName":"psid",
-            "dataType":"int"
+            "dataType":"java.lang.String",
+            "annotations":{
+                "maxLen": 50
+            }
         },
         {
             "fieldName":"pageid",
-            "dataType":"int"
+            "dataType":"java.lang.String",
+            "annotations":{
+                "maxLen": 50
+            }
         },
         {
             "fieldName":"message",
