@@ -1,6 +1,14 @@
 {
     "variables":{
         "MAIN_STORE_DOMAIN":"localhost/sossgrid.js",
-        "MAPS_APIKEY":"AIzaSyCKsfJwJG7pfmMPXYXZyex8gtj_dw2mqro"
+        "MAPS_APIKEY":"AIzaSyCKsfJwJG7pfmMPXYXZyex8gtj_dw2mqro",
+        "FBLAPP_ID":"1495359210619523",
+        "FBLAPP_S":"58222a1cf78f04e2073173f480a5b40b",
+        "FBCAPP_DOMAIN":"localhost/sossgrid.js",
+        "APPURL":"http://localhost/sossgrid.js/#/app",
+        "GOOGLE_ID":"710449121989-cb774b5nvehh0hhv9vnbmsfvb26e61q6.apps.googleusercontent.com",
+        "GOOGLE_S":"A9GI3hdGg0iVNAacHA5Jgihd",
+        "FB_CHALLENGE":"123",
+        "FB_MSG_APP_S":"EAADLGyJrZBTcBALGRs2SLzP3WkhtZBsrLCpMSCYCpUrAjNZCellpch9UR0oxHygc4VCWjopOklNkfTOPE4h4vsKYBxYKAcVJM1ZBHeZAHmpZB32XPUkr8Aj0tWV3GaBdzYUpZCzrCZCyAGsvd16R5L9fYBauKYjWnfIQpR9RMfwg8gZDZD"
     }
 }

@@ -60,6 +60,9 @@
         },
         "davvag-shop":{
             "version":"latest"
+        },
+        "facebook-messanger":{
+            "version":"latest"
         }
     },
     "webdock":{
