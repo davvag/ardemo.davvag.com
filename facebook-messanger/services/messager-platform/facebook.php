@@ -54,8 +54,17 @@ class FBMessangerPlatform {
          $url = "https://graph.facebook.com/v6.0/me/messages?access_token=" . FB_MSG_APP_S;
          
          //$context = stream_context_create($options);
-         $result = $this->callRest($url, $m, "POST");
-         
+         $options = array(
+            'http' => array(
+            'method' => 'POST',
+            'content' => json_encode($m),
+            'header' => "Content-Type: application/json\r\n" .
+            "Accept: application/json\r\n"
+            ));
+            $context = stream_context_create($options);
+
+            $result = file_get_contents($url, false, $context);
+         echo $result;
          //$json=json_($result);
          //return $json;
     }
@@ -64,11 +73,10 @@ class FBMessangerPlatform {
         $ch = curl_init();
         //$url 
         curl_setopt ($ch, CURLOPT_URL, $url);
-       /* if (!isset($headerArray))
-            $headerArray = array("Content-Type: application/json");*/
+       if (!isset($headerArray))
+            $headerArray = array("Content-Type: application/json");
 
-        //curl_setopt ($ch, CURLOPT_HTTPHEADER, $headerArray);
-        
+        curl_setopt ($ch, CURLOPT_HTTPHEADER, $headerArray);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 
         if (isset($jsonObj)){
@@ -78,6 +86,9 @@ class FBMessangerPlatform {
 
         curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
         $response  = curl_exec($ch);
+        if(curl_errno($ch)){
+            echo 'Curl error: ' . curl_error($ch);
+        }
         //echo $response;
         curl_close($ch);
         return $response;
