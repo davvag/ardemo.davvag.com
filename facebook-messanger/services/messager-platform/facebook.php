@@ -32,6 +32,7 @@ class FBMessangerPlatform {
                         $m->message=$msg->message->text;
                         //$m->message=$msg->message->text;
                         $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
+                        CacheData::setObjects($m->msgid,"fb_msg_received",$m);
                         $res=$this->sendMessage($msg->sender->id,"received");
                         return $result;
                         //$res=$this->sendMessage(c,"received");
@@ -46,33 +47,45 @@ class FBMessangerPlatform {
     }
 
     private function sendMessage($recipient, $textMessage) {
-        //$token = YOUR_TOKEN_HERE
-        $json = '"messaging_type": "RESPONSE",
-        "recipient":{
-          "id":"'.$recipient.'"
-        },
-        "message":{
-          "text":"'.$textMessage.'"
-        }';
-        $options = array(
-         'http' => array(
-         'method' => 'POST',
-         'content' => $json,
-         'header' => "Content-Type: application/json\r\n" .
-         "Accept: application/json\r\n"
-         )
-         );
-         
+        
+         $m =array("messaging_type"=>"RESPONSE","recipient"=>array("id"=>$recipient),"message"=>array("text"=>$textMessage));
+
+         //echo json_encode($m);
          $url = "https://graph.facebook.com/v6.0/me/messages?access_token=" . FB_MSG_APP_S;
-         $context = stream_context_create($options);
-         $result = file_get_contents($url, false, $context);
-         $json=json_decode($result);
-         return $json;
+         
+         //$context = stream_context_create($options);
+         $result = $this->callRest($url, $m, "POST");
+         
+         //$json=json_($result);
+         //return $json;
+    }
+
+    private  function callRest($url, $jsonObj = null, $method="GET", $headerArray=null){
+        $ch = curl_init();
+        //$url 
+        curl_setopt ($ch, CURLOPT_URL, $url);
+       /* if (!isset($headerArray))
+            $headerArray = array("Content-Type: application/json");*/
+
+        //curl_setopt ($ch, CURLOPT_HTTPHEADER, $headerArray);
+        
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+
+        if (isset($jsonObj)){
+            //curl_setopt ($ch, CURLOPT_POST, 1);
+            curl_setopt ($ch, CURLOPT_POSTFIELDS, json_encode($jsonObj));
+        }
+
+        curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
+        $response  = curl_exec($ch);
+        //echo $response;
+        curl_close($ch);
+        return $response;
     }
 
     private function varify($raw_post_data,$header_signature){
         $expected_signature = hash_hmac('sha1', $raw_post_data, FB_MSG_APP_S);
-        echo $expected_signature;
+        //echo $expected_signature;
         $signature = '';
         if(
             strlen($header_signature) == 45 &&

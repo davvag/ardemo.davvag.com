@@ -12,14 +12,14 @@
             "fieldName":"psid",
             "dataType":"java.lang.String",
             "annotations":{
-                "maxLen": 50
+                "maxLen": 100
             }
         },
         {
             "fieldName":"pageid",
             "dataType":"java.lang.String",
             "annotations":{
-                "maxLen": 50
+                "maxLen": 100
             }
         },
         {
