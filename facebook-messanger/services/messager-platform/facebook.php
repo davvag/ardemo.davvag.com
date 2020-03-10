@@ -19,6 +19,7 @@ class FBMessangerPlatform {
             //preg_replace('/"id":(\d+)/', '"id":"$1"', $raw_post_data);
             $messageBody=json_decode($raw_post_data);
             //var_dump($raw_post_data);
+            CacheData::setObjects(md5($header_signature),"fb_msg",$messageBody);
             if($messageBody->object=="page"){
                 foreach ($messageBody->entry as $value) {
                     $pageid= $value->id;
