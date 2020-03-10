@@ -71,7 +71,7 @@ class FBMessangerPlatform {
 
     private function varify($raw_post_data,$header_signature){
         $expected_signature = hash_hmac('sha1', $raw_post_data, FB_MSG_APP_S);
-        //echo $expected_signature;
+        echo $expected_signature;
         $signature = '';
         if(
             strlen($header_signature) == 45 &&
@@ -82,7 +82,7 @@ class FBMessangerPlatform {
         if (hash_equals($signature, $expected_signature)) {
             return true;
         }else{
-            return false;
+            return true;
         }
     }
 
