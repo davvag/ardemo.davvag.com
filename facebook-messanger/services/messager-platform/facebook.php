@@ -9,35 +9,29 @@ class FBMessangerPlatform {
     }
 
     public function postWebhook($req,$res){
-        //$appsecret = 'EAADLGyJrZBTcBALGRs2SLzP3WkhtZBsrLCpMSCYCpUrAjNZCellpch9UR0oxHygc4VCWjopOklNkfTOPE4h4vsKYBxYKAcVJM1ZBHeZAHmpZB32XPUkr8Aj0tWV3GaBdzYUpZCzrCZCyAGsvd16R5L9fYBauKYjWnfIQpR9RMfwg8gZDZD';
         $raw_post_data = $req->Body();
-       //echo $req->Header("X-Hub-Signature");
-        //var_dump($req->Headers()->{"X-Hub-Signature"});
         $header_signature = $req->Headers()->{"X-Hub-Signature"};
-        //echo $raw_post_data;
         if($this->varify($raw_post_data,$header_signature)){
-            //preg_replace('/"id":(\d+)/', '"id":"$1"', $raw_post_data);
             $messageBody=json_decode($raw_post_data);
-            //var_dump($raw_post_data);
-            CacheData::setObjects(md5($header_signature),"fb_msg",$messageBody);
+            //CacheData::setObjects(md5($header_signature),"fb_msg",$messageBody);
             if($messageBody->object=="page"){
                 foreach ($messageBody->entry as $value) {
                     $pageid= $value->id;
                     if(isset($value->messaging))
                     foreach ($value->messaging as $msg) {
-                        $r=$this->sendMessage($msg->sender->id,$msg->message->text);
-                        $m=new stdClass();
-                        $m->msgid=$msg->message->mid;
-                        $m->psid=$msg->sender->id;
-                        $m->pageid=$pageid;
-                        $m->message=$msg->message->text;
-                        $m->replymsgid=$r->message_id;
-                        //$m->message=$msg->message->text;
-                        $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
-                        CacheData::setObjects($m->msgid,"fb_msg_received",$m);
-                        
-                        return $result;
-                        //$res=$this->sendMessage(c,"received");
+                        $profile=$this->retriveUser($msg->sender->id,$pageid);
+                        //return $profile;
+                        if($profile){
+                            $r=$this->sendMessage($msg->sender->id,$msg->message->text);
+                            $m=new stdClass();
+                            $m->msgid=$msg->message->mid;
+                            $m->psid=$msg->sender->id;
+                            $m->pageid=$pageid;
+                            $m->message=$msg->message->text;
+                            $m->replymsgid=$r->message_id;
+                            $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
+                            return $result;
+                        }
                     }
                 }
             }
@@ -48,26 +42,48 @@ class FBMessangerPlatform {
         return "not processed";
     }
 
+
+    private function retriveUser($psid,$pageid){
+       $profile=CacheData::getObjects($psid,"fb_profiles");
+       if(!isset($profile)){
+            $r = SOSSData::Query ("fb_profiles", urlencode("id:".$psid.""));
+            if(count($r->result)!=0){
+                $profile=$r->result[0];
+                CacheData::setObjects($psid,"c",$profile);
+                return $profile;
+            }else{
+                $url= "https://graph.facebook.com/".$psid."?fields=id,first_name,last_name,profile_pic,gender,timezone,name&access_token=".FB_MSG_APP_S."";
+                $result = $this->callRest($url);
+                //echo $result;
+                $profile=json_decode($result);
+                if(isset($profile->id)){
+                    $profile->pageid=$pageid;
+                    $result=SOSSData::Insert ("fb_profiles", $profile);
+                    CacheData::setObjects($psid,"fb_profiles",$profile);
+                    $this->stripImage($profile->profile_pic,"fb_profile",$profile->id);
+                    return $profile;
+                }else{
+                    return null;
+                }
+            }
+       }else{
+           return $profile;
+       }
+    }
+
+    private function stripImage($url,$ns,$name){
+        $pic=file_get_contents($url);
+        $folder = MEDIA_FOLDER . "/".  $_SERVER["HTTP_HOST"] . "/$ns";
+        if (!file_exists($folder))
+                mkdir($folder, 0777, true);
+        file_put_contents("$folder/$name", $pic);
+    }
+
     private function sendMessage($recipient, $textMessage) {
-        
          $m =array("messaging_type"=>"RESPONSE","recipient"=>array("id"=>$recipient),"message"=>array("text"=>$textMessage));
-
-         //echo json_encode($m);
          $url = "https://graph.facebook.com/v6.0/me/messages?access_token=" . FB_MSG_APP_S;
-         
-         //$context = stream_context_create($options);
-         $options = array(
-            'http' => array(
-            'method' => 'POST',
-            'content' => json_encode($m),
-            'header' => "Content-Type: application/json\r\n" .
-            "Accept: application/json\r\n"
-            ));
-            $context = stream_context_create($options);
-
-            $result = file_get_contents($url, false, $context);
-        
-            return json_decode($result);
+         $result = $this->callRest($url, $m, "POST");
+         return json_decode($result);
     }
 
     private  function callRest($url, $jsonObj = null, $method="GET", $headerArray=null){
