@@ -20,17 +20,29 @@ class FBMessangerPlatform {
                     if(isset($value->messaging))
                     foreach ($value->messaging as $msg) {
                         $profile=$this->retriveUser($msg->sender->id,$pageid);
+                        $profile->message=$msg->message->text;
                         //return $profile;
                         if($profile){
-                            $r=$this->sendMessage($msg->sender->id,$msg->message->text);
-                            $m=new stdClass();
-                            $m->msgid=$msg->message->mid;
-                            $m->psid=$msg->sender->id;
-                            $m->pageid=$pageid;
-                            $m->message=$msg->message->text;
-                            $m->replymsgid=$r->message_id;
-                            $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
-                            return $result;
+                            require_once(PLUGIN_PATH . "/davvag-flow/flow.php");
+                            try {
+                                $x=DavvagFlow::Execute($pageid,"1",$profile,"node1");
+                                //var_dump($x);
+                                $r=$this->sendMessage($msg->sender->id,$x->outData->replymessage);
+                                $m=new stdClass();
+                                $m->msgid=$msg->message->mid;
+                                $m->psid=$msg->sender->id;
+                                $m->pageid=$pageid;
+                                $m->message=$msg->message->text;
+                                $m->replymsgid=$r->message_id;
+                                $result=SOSSData::Insert ("fb_messages", $m,$tenantId = null);
+                                //return $result;
+                                return $x;
+                            } catch (Exception $e) {
+                                //var_dump($profile);
+                                return $e->getMessage();
+                            }
+                            
+                           
                         }
                     }
                 }

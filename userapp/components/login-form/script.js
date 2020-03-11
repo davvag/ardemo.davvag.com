@@ -20,8 +20,21 @@ WEBDOCK.component().register(function(exports){
     var vueData =  {
         methods:{
             navigate: function(id){
-                handler = exports.getShellComponent("soss-routes");
-                handler.appNavigate(id ? "/uom?uomid=" + id : "/uom");
+                //handler = exports.getShellComponent("soss-routes");
+                var handler = exports.getComponent("login-handler");
+                //location.href="http://localhost/sossgrid.js/components/userapp/login-handler/service/FacebookLogin";
+                handler.services.FacebookLogin().then(function(result){
+                if(result.success){
+                    location.href=result.result;
+                }else{
+                    apprhandler = exports.getShellComponent("soss-routes");
+                    apprhandler.appNavigate("../error");
+                }
+                    
+                }).error(function(result){
+                    apprhandler = exports.getShellComponent("soss-routes");
+                    apprhandler.appNavigate("../error");
+                });
             },
             toggleSignUp:function(){
                 $('#logreg-forms .form-signin').toggle(); // display:block or none

@@ -1,0 +1,37 @@
+{
+    "name":"Workflow -1",
+    "node1":{
+        "urntype":"class",
+        "file":"test.php",
+        "class":"test",
+        "method":{
+            "name":"gohome",
+            "params":[{"inputData":"id"},{"inputData":"pageid"}],
+            "return":true,
+            "returnobj":"gohome"
+        },
+        "success":"node2",
+        "fail":"nodefail"
+    },"node2":{
+        "urntype":"class",
+        "file":"test.php",
+        "class":"test",
+        "method":{
+            "name":"getMessage",
+            "params":[{"inputData":"message"}],
+            "return":true,
+            "returnobj":"replymessage"
+        },
+        "fail":"nodefail"
+    },"nodefail":{
+        "urntype":"class",
+        "file":"test.php",
+        "class":"test",
+        "method":{
+            "name":"fail",
+            "params":[{"inputData":"name"}],
+            "return":true,
+            "returnobj":"failed"
+        }
+    }
+}

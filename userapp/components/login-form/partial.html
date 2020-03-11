@@ -11,7 +11,9 @@
   <form class="form-signin" id="form-signin">
         
       <h1 class="h3 mb-3 font-weight-normal" style="text-align: center"> Sign in</h1>
-      
+      <div class="social-login">
+        <button class="btn facebook-btn social-btn" type="button" v-on:click="navigate"><span><i class="fa fa-facebook"></i> Sign in with Facebook</span> </button>
+      </div>
       <input v-model="loginForm.email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
       <input v-model="loginForm.password" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
       

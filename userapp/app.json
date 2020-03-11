@@ -16,6 +16,10 @@
             "type":"component",
             "location":"components"
         },
+        "login-error": {
+            "type":"component",
+            "location":"components"
+        },
         "frmprofile-view": {
             "type":"component",
             "location":"components"
@@ -36,7 +40,8 @@
                 "partials":{
                     "/login":"login-form",
                     "/profile":"frmprofile-view",
-                    "/reset":"login-restpassword"
+                    "/reset":"login-restpassword",
+                    "/error":"login-error"
                 }
             }
         }

@@ -19,6 +19,18 @@
             "login" : {
                 "method" : "GET",
                 "parameters": ["email","password","domain"]
+            },"GoogleLogin":{
+                "method" : "GET",
+                "parameters": []
+            }, "FacebookLogin" : {
+                "method" : "GET",
+                "parameters": []
+            }, "FacebookLoginCallback" : {
+                "method" : "GET",
+                "parameters": []
+            },"LoginState":{
+                "method" : "GET",
+                "parameters": []
             },
             "logout" : {
                 "method" : "GET"

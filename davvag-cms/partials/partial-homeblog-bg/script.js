@@ -63,7 +63,7 @@ WEBDOCK.component().register(function(exports){
                     if(!bindData.allloaded && !bindData.loading){
                         //page=page+size;
                         loadData();
-                        //console.log("Bottom of the page products " +bindData.products.length +" pageNumber "+page);
+                        console.log("Bottom of the page products " +bindData.products.length +" pageNumber "+page);
                     }
                 }
                 //loadproducts();
